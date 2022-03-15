@@ -1,0 +1,5 @@
+terraform.tfstate
+terraform.out
+cyber-range*
+.terraform*
+terraform-vpc/.terraform.lock.hcl
