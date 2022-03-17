@@ -53,6 +53,42 @@ resource "aws_instance" "web1" {
   }
 }
 
+resource "aws_instance" "dvwa" {
+
+  ami           = var.AMI-KALI
+  instance_type = "t2.micro"
+
+  # VPC
+  subnet_id = aws_subnet.prod-subnet-public-1.id
+
+  # Security Group
+  vpc_security_group_ids = ["${aws_security_group.ssh-allowed.id}"]
+
+  # the Public SSH key
+  key_name = aws_key_pair.cyber-range-key-pair.id
+
+  # damn vulnerable web server
+  # dvwa installation
+  provisioner "file" {
+    source      = "dvwa.sh"
+    destination = "/tmp/dvwa.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /tmp/dvwa.sh",
+      "sudo /tmp/dvwa.sh"
+    ]
+  }
+
+  connection {
+    user        = "root"
+    private_key = file("${var.PRIVATE_KEY_PATH}")
+    host        = self.public_ip
+  }
+}
+
+
 // Sends your public key to the instance
 resource "aws_key_pair" "cyber-range-key-pair" {
   key_name   = "cyber-range-key-pair"
