@@ -40,7 +40,9 @@ resource "aws_security_group" "ssh-allowed" {
     from_port   = 0
     to_port     = 0
     protocol    = -1
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"] // this will allow up to 219.255.255.255
+    // cidr_blocks = ["219.0.0.0/8"] // this will allow up to 219.255.255.255
+    // could also try 219.90.0.0/16
   }
   ingress {
     from_port = 22
@@ -49,14 +51,14 @@ resource "aws_security_group" "ssh-allowed" {
     // This means, all ip address are allowed to ssh ! 
     // Do not do it in the production. 
     // Put your office or home address in it!
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["219.0.0.0/8"]
   }
   //If you do not add this rule, you can not reach the NGIX  
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["219.0.0.0/8"]
   }
   tags = {
     Name = "ssh-allowed"

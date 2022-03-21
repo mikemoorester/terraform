@@ -13,7 +13,7 @@ resource "aws_instance" "tester" {
   key_name = aws_key_pair.cyber-range-key-pair.id
 
   connection {
-    user        = "root"
+    user        = "kali"
     private_key = file("${var.PRIVATE_KEY_PATH}")
     host        = self.public_ip
   }
@@ -55,7 +55,8 @@ resource "aws_instance" "web1" {
 
 resource "aws_instance" "dvwa" {
 
-  ami           = var.AMI-KALI
+  ami           = lookup(var.AMI, var.AWS_REGION)
+  // ami           = var.AMI-KALI
   instance_type = "t2.micro"
 
   # VPC
@@ -82,12 +83,12 @@ resource "aws_instance" "dvwa" {
   }
 
   connection {
-    user        = "root"
+    user        = var.EC2_USER
+    // user        = "root"
     private_key = file("${var.PRIVATE_KEY_PATH}")
     host        = self.public_ip
   }
 }
-
 
 // Sends your public key to the instance
 resource "aws_key_pair" "cyber-range-key-pair" {

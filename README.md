@@ -6,9 +6,10 @@ Terraform scripts to create simple services in AWS
     terraform init *set up the terraform project*   
     terraform verify *check that the syntax is correct*  
     terraform fmt  *apply standard formatting to terraform files*  
-    terraform apply *run the terrafrm script to apply the infrastructure in the cloud*  
-    terraform destroy *remove everything you have just created in the terraform script*  
+    terraform apply *run the terrafrm script to apply the infrastructure in the cloud*
 
+Apply a variable at the command line: `terraform apply -var "instance_name=YetAnotherName"`  
+`terraform destroy` *remove everything you have just created in the terraform script*  
 
 ## Simple
 
