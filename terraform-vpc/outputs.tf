@@ -18,6 +18,16 @@ output "instance_web1_publc_ip" {
   value       = aws_instance.web1.public_ip
 }
 
+output "instance_apt_id" {
+  description = "ID of the APT instance"
+  value       = aws_instance.apt.id
+}
+
+output "instance_apt_publc_ip" {
+  description = "Public IP address of the APT instance"
+  value       = aws_instance.apt.public_ip
+}
+
 //output "instance_dvwa_id" {
 //  description = "ID of the DVWA instance"
 //  value       = aws_instance.dvwa.id

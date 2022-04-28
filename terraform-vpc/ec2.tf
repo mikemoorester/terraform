@@ -36,7 +36,6 @@ resource "aws_instance" "tester" {
   }
 }
 
-
 resource "aws_instance" "web1" {
   ami           = lookup(var.AMI, var.AWS_REGION)
   instance_type = "t2.micro"
@@ -79,6 +78,45 @@ resource "aws_instance" "web1" {
 // TODO: Create a metasploitable instance
 //
 //-----------------------------------------------------------------------------
+resource "aws_instance" "apt" {
+
+  ami           = "ami-0b7dcd6e6fd797935" 
+// lookup(var.AMI, var.AWS_REGION)
+  instance_type = "t2.micro"
+
+  # VPC
+  subnet_id = aws_subnet.prod-subnet-public-1.id
+
+  # Security Group
+  vpc_security_group_ids = ["${aws_security_group.ssh-allowed.id}"]
+
+  # the Public SSH key
+  key_name = aws_key_pair.cyber-range-key-pair.id
+
+  # apt installation and set-up
+  provisioner "file" {
+    source      = "apt.sh"
+    destination = "/tmp/apt.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /tmp/apt.sh",
+      "sudo /tmp/apt.sh"
+    ]
+  }
+
+  connection {
+    user        = var.EC2_USER
+    private_key = file("${var.PRIVATE_KEY_PATH}")
+    host        = self.public_ip
+  }
+
+  tags = {
+    Name = "apt"
+  }
+}
+
 //-----------------------------------------------------------------------------
 // TODO: Doesn't install completely need to finish
 //       Need to be able to bring this ec2 up and down at the command line

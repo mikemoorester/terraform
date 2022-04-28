@@ -50,14 +50,16 @@ resource "aws_security_group" "ssh-allowed" {
     protocol  = "tcp"
     // Put your office or home address in it! 
     // /8 will make it 49.0.0.0 - 49.255.255.255
-    //cidr_blocks = ["106.0.0.0/8","60.0.0.0/8"]
-    cidr_blocks = ["49.0.0.0/8"]
+    cidr_blocks = ["106.0.0.0/8","60.0.0.0/8"]
+    //cidr_blocks = ["49.0.0.0/8"]
   }
   //If you do not add this rule, you can not reach the NGIX  
   // can only access this from the same subnet in AWS
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 0
+    //from_port   = 80
+    //to_port     = 80
+    to_port     = 1024
     protocol    = "tcp"
     cidr_blocks = ["10.0.1.0/24"]
   }
