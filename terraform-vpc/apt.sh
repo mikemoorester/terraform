@@ -15,8 +15,12 @@ apt -y install python3 python3-pip
 apt -y install postgresql postgresql-contrib
 # start the service
 systemctl start postgresql.service
-# create the database apt
-sudo -u postgres createdb apt
+# Add the role ubunutu
+sudo -u postgres psql --file=create_user.sql
+#
+# create the database apt this is called from the 
+#
+# sudo -u ubuntu createdb apt 
 
 # Python dependencies
 pip3 install python-nmap 
